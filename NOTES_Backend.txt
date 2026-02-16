@@ -1,0 +1,161 @@
+* BACKEND :
+* ________
+
+node init:
+    This command is the first command to run on terminal to initialize a node project.
+
+node i express:
+    to install express and node modules.
+
+
+
+^ What you needed:
+^ _______________
+
+<do necessary imports>
+
+const app = express(); //to create the app - will create an instance of the server
+app.use(express.json()); //for POST, parse the user input
+app.use(cookieParser()); //for cookie, parse the cookie
+dotenv.config(); //for .env, decode data from .env
+app.listen(<port>); //to start the app
+
+
+
+^ 3 Important Concepts:
+^ _____________________
+
+& 1. node_modules: 
+------------------
+
+→ It list all the installed packages that your project depends on, all the internal libraries of a certain package as well.
+→ In short, if i install a package, then the entire code of that package will go in node_modules.
+
+& 2. package.json:
+------------------
+
+→ It tells basic information about your node project and all the dependencies meaning only installed packages with their version.
+→ ex. if express is installed then inside dependencies, it shows express with its installed version.
+→ It list only the package and its version our project depends on, not the packages on whom the installed package depends on.
+
+& 3. package-lock.json:
+-----------------------
+
+→ It lists "all" the dependencies with their nested dependencies as well with their "exact" versions and extra information.
+→ ex. if something define like this in package.json - "express": "^4.18.2", then compatible versions can be installed in future by you or someone else, but
+    if the same thing defined in package-lock.json, exact that version will be installed, so every developer gets the same version.
+→ It list all the packages, with their exact version and extra information: the package on our project depends on, the nested packages as well on installed package depends on..
+
+
+
+^ JWT:
+^ ___
+
+→ generate the token: 
+    jwt.sign(<the field you wanted to hide>, <secret_key>);
+
+→ verify the token: 
+    jwt.verify(<token>, <secret_key>);
+
+example:
+-------
+
+jwt.sign({id:this._id}, "SECRET_KEY");
+jwt.verify(token, process.env.SECRET_KEY);
+
+
+
+^ Cookie:
+^ ______
+
+→ generate the cookie: 
+    res.cookie(<cookie name>, <cookie value>, {
+    httpOnly: true,
+    sameSite: "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000
+});
+
+→ get the cookie from browser: 
+    const cookie = req.cookies;
+
+
+
+^ REGEX pattern in route:
+^ ______________________
+
+→ usually we write route name in "quotation marks", but regex does NOT need "qotation marks", it needs / at start and / at end, and inside that, regex pattern will be fallen.
+
+& REGEX Patterns:
+-----------------
+
+^ : start of the regex.
+$ : end of the pattern
+
+. : only single character
++ : one or more occurences.
+* : zero or more occurences.
+? : zero or one occurences.
+
+\d : only single digit, \d+, \d*
+\w : letter, digit and underscore, \w+, \w*
+\s : whitespaces, \s+, \s*
+
+
+ex. that only accepts numbers as route:
+
+app.get(/^\/\d+$/, (req, res) => {
+    res.send("My number route");
+});
+
+→ If you specify ^ in regex, then must start the regex by this: /^\/<start of regex>/
+
+
+
+^ Error handling middleware:
+^ _________________________
+
+→ normal router:
+    app.get("/", async (req, res) => {
+        // body
+    })
+
+→ error handling "middleware" router: (must have 4 parameters, and err must place at first)
+    app.use((err, req, res, next) => {
+        //body
+    })
+
+→ error handling router can be specified by "use" ONLY, no "get", no "post", no "patch", no "delete".
+
+
+
+^ next() vs next(error):
+^ ______________________
+
+→ next() : Moves conntrol to the next normal middleware.
+→ next(error) : Skips all the normal middlewares, and jump to the error handling middleware.
+
+
+^ Common error handler for all the controllers:
+^ ____________________________________________
+
+→ It takes function as an argument.
+
+const errorHandler = (func) => {
+    return async function (req, res, next) {
+        try {
+            const result = await func(req, res, next);
+            return result;
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+}
+
+→ No changes in controllers' file.
+→ Pass the controller as an argument in router's file. Do not pass only controller in router, but controller as an argument for errorHandler function.
+
+const generalRouter = express.Router();
+generalRouter.post("/getNotes", errorHandler(getNotes));
+
+
+^ req.params and req.query:
