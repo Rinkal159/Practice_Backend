@@ -56,6 +56,7 @@ app.listen(<port>); //to start the app
 
 → verify the token: 
     jwt.verify(<token>, <secret_key>);
+    - it returns the field that was hidden by jwt.sign
 
 example:
 -------
@@ -77,6 +78,19 @@ jwt.verify(token, process.env.SECRET_KEY);
 
 → get the cookie from browser: 
     const cookie = req.cookies;
+
+
+^ Bcrypt:
+^ ______
+
+→ To hash password during signup : bcrypt.hash(<password>, <salt-generally 10>);
+→ compare password during login: brypt.compare(<password entered by user during login>, <hashed password saved in database>);
+    - it gives boolean result, true if successfully matched, false when doesn't match.
+
+Example:
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const result = await brypt.compare(password, user.password);
+
 
 
 
@@ -159,3 +173,19 @@ generalRouter.post("/getNotes", errorHandler(getNotes));
 
 
 ^ req.params and req.query:
+
+
+^ Atlas, Cluster and Compass in Mongo DB ecosystem:
+^ _________________________________________________
+
+→ Atlas:
+    - Cloud database service of MongoDB.
+
+→ Cluster:
+    - It is the server that manages your database.
+    - Cluster is inside the atlas, and inside Cluster, there is a database.
+    - Atlas -> Cluster -> Database -> Collections
+
+→ Compass:
+    - It is a visual tool to manage the database.
+    - It connects to cluster.
