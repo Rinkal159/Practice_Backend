@@ -1,5 +1,5 @@
 import express from "express";
-import errorHandler from "../middleware/errorHandler.js";
+import errorHandler from "../../middleware/errorHandler.js";
 import getNotes from "../controllers/getNotes.js";
 import postNotes from "../controllers/postNotes.js";
 import deleteNotes from "../controllers/deleteNotes.js";
