@@ -1,4 +1,4 @@
-import Notes from "../model/Notes.js";
+import Notes from "../../model/Notes.js";
 
 const getNotes = async (req, res) => {
     const id = req.id;
