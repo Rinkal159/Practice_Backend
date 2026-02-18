@@ -13,6 +13,6 @@ coreRouter.post("/addNote", errorHandler(authentication), errorHandler(addNote))
 coreRouter.get("/getNotes", errorHandler(authentication), errorHandler(getNotes));
 coreRouter.get("/deleteAll", errorHandler(authentication), errorHandler(deleteAll));
 coreRouter.post("/deleteNote/:noteId", errorHandler(authentication), errorHandler(deleteNote));
-coreRouter.post("/updateNote/:noteId", errorHandler(authentication), errorHandler(updateNote));
+coreRouter.patch("/updateNote/:noteId", errorHandler(authentication), errorHandler(updateNote));
 
 export default coreRouter;
